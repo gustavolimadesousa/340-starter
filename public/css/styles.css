@@ -56,8 +56,11 @@ nav ul {
   margin: -10px;
   padding: 20px;
   border: 20px;
-  color: #fff;
   font-family: sans-serif;
+}
+
+nav a {
+color: #fff;
 }
 
 /* INTRO */
