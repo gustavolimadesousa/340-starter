@@ -21,6 +21,11 @@ body {
   background-color: #fff;
 }
 
+h1 {
+  font-size: 1.5rem;
+  margin-top: 20px;
+}
+
 a {
   text-decoration: none;
   color: #242333;
@@ -67,11 +72,6 @@ color: #fff;
 
 .intro {
   position: relative;
-}
-
-.intro h1 {
-  font-size: 1.5rem;
-  padding-top: 20px;
 }
 
 .intro img {
@@ -145,13 +145,51 @@ color: #fff;
   margin-top: 1em;
 }
 
+/* INVENTORY PAGE */
+
+
+#inv-display {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  padding: 10px;
+}
+
+#inv-display li {
+  list-style-type: none;
+  background-color: #f4f4f4;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+#inv-display img {
+  width: 100%;
+  border-radius: 5px;
+}
+
+#inv-display .namePrice {
+  margin-top: 10px;
+  text-align: center;
+}
+
+#inv-display .namePrice h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+#inv-display .namePrice span {
+  color: #01b0d3;
+  font-weight: bold;
+}
+
+/* Full-Screen Media Query */
+
 @media (min-width: 800px) {
   body {
-    max-width: 800px;
+    max-width: 1000px;
     margin: 50px auto;
     border: #01b0d3 solid 5px;
     border-radius: 5px;
-    
   }
 
   .container {
@@ -171,5 +209,23 @@ color: #fff;
   .upgrades {
     grid-column: 1/1;
     grid-row: 2/2;
+  }
+
+  /* Inv-display grid for large screens */
+  #inv-display {
+    grid-template-columns: repeat(3, 1fr); /* 3 columns */
+    gap: 20px;
+  }
+
+  #inv-display li {
+    padding: 20px;
+  }
+
+  #inv-display .namePrice h2 {
+    font-size: 1.4rem;
+  }
+
+  #inv-display .namePrice span {
+    font-size: 1.2rem;
   }
 }
