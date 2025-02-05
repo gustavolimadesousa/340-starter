@@ -30,3 +30,37 @@ invCont.buildByClassificationId = async function (req, res, next) {
 };
 
 module.exports = invCont;
+
+// Build inventory detail view
+invCont.buildDetailView = async function (req, res, next) {
+  const invId = req.params.invId;
+
+  try {
+    const vehicleData = await invModel.getVehicleById(invId);
+
+    if (vehicleData) {
+      let nav = await utilities.getNav();
+      const detailHTML = utilities.wrapVehicleInHTML(vehicleData);
+
+      res.render("./inventory/detail", {
+        title: `${vehicleData.inv_make} ${vehicleData.inv_model}`,
+        nav,
+        detailHTML,
+      });
+    } else {
+      res.status(404).render("./inventory/detail", {
+        title: "Vehicle Not Found",
+        nav: await utilities.getNav(),
+        detailHTML: '<p class="notice">Vehicle not found.</p>',
+      });
+    }
+  } catch (error) {
+    console.error("Error building detail view:", error);
+    res.status(500).render("./inventory/detail", {
+      title: "Error",
+      nav: await utilities.getNav(),
+      detailHTML: '<p class="notice">An error occurred while fetching the vehicle details.</p>',
+    });
+  }
+};
+

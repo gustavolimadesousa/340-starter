@@ -1,10 +1,10 @@
 const invModel = require("../models/inventory-model");
-const Util = {};
+const utilities = {};
 
 /* ************************
  * Constructs the nav HTML unordered list
  ************************** */
-Util.getNav = async function (req, res, next) {
+utilities.getNav = async function (req, res, next) {
   let data = await invModel.getClassifications();
 
   let list = "<ul>";
@@ -25,12 +25,10 @@ Util.getNav = async function (req, res, next) {
   return list;
 };
 
-module.exports = Util;
-
 /* **************************************
  * Build the classification view HTML
  * ************************************ */
-Util.buildClassificationGrid = async function (data) {
+utilities.buildClassificationGrid = async function (data) {
   let grid;
   if (data.length > 0) {
     grid = '<ul id="inv-display">';
@@ -79,3 +77,42 @@ Util.buildClassificationGrid = async function (data) {
   }
   return grid;
 };
+
+/* **************************************
+ * Format the vehicle's data into HTML.
+ * ************************************ */
+utilities.wrapVehicleInHTML = function (vehicle) {
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+  const priceFormatted = formatter.format(vehicle.inv_price);
+  const mileageFormatted = new Intl.NumberFormat("en-US").format(
+    vehicle.inv_miles
+  );
+
+  return `
+    <div class="vehicle-detail">
+      <h1>${vehicle.inv_make} ${vehicle.inv_model}</h1>
+      <div class="vehicle-detail-container">
+        <img src="${vehicle.inv_image}" alt="${vehicle.inv_make} ${vehicle.inv_model}" class="vehicle-image">
+        <div class="vehicle-info">
+          <h2>${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model}</h2>
+          <p><strong>Price:</strong> ${priceFormatted}</p>
+          <p><strong>Mileage:</strong> ${mileageFormatted} miles</p>
+          <p><strong>Description:</strong> ${vehicle.inv_description}</p>
+        </div>
+      </div>
+    </div>
+  `;
+};
+
+/* ****************************************
+ * Middleware For Handling Errors
+ * Wrap other function in this for
+ * General Error Handling
+ **************************************** */
+utilities.handleErrors = (fn) => (req, res, next) =>
+  Promise.resolve(fn(req, res, next)).catch(next);
+
+module.exports = utilities;
