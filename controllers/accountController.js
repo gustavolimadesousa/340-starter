@@ -1,6 +1,7 @@
 const utilities = require("../utilities/");
 const accountModel = require("../models/account-model");
-const { validationResult } = require('express-validator'); // Import validationResult from express-validator
+const { validationResult } = require("express-validator"); // Import validationResult from express-validator
+const bcrypt = require("bcryptjs");
 
 /* ****************************************
  *  Deliver login view
@@ -25,8 +26,6 @@ async function buildLogin(req, res, next) {
   }
 }
 
-
-
 /* ****************************************
  *  Deliver Register view
  * *************************************** */
@@ -46,7 +45,6 @@ async function buildRegister(req, res, next) {
   }
 }
 
-
 /* ****************************************
  *  Process Registration
  * *************************************** */
@@ -59,12 +57,29 @@ async function registerAccount(req, res) {
     account_password,
   } = req.body;
 
+  // Hash the password before storing
+  let hashedPassword;
+  try {
+    // Hash the password with a salt (cost 10)
+    hashedPassword = await bcrypt.hash(account_password, 10); // Hash password asynchronously
+  } catch (error) {
+    req.flash(
+      "notice",
+      "Sorry, there was an error processing the registration."
+    );
+    return res.status(500).render("account/register", {
+      title: "Registration",
+      nav,
+      errors: null,
+    });
+  }
+
   try {
     const regResult = await accountModel.registerAccount(
       account_firstname,
       account_lastname,
       account_email,
-      account_password
+      hashedPassword // Use the hashed password instead of plain text
     );
 
     if (regResult) {
@@ -127,4 +142,3 @@ async function loginAccount(req, res) {
 }
 
 module.exports = { buildLogin, buildRegister, registerAccount, loginAccount };
-
