@@ -1,5 +1,6 @@
 const utilities = require("../utilities/");
 const accountModel = require("../models/account-model");
+const { validationResult } = require('express-validator'); // Import validationResult from express-validator
 
 /* ****************************************
  *  Deliver login view
@@ -7,17 +8,24 @@ const accountModel = require("../models/account-model");
 async function buildLogin(req, res, next) {
   try {
     let nav = await utilities.getNav();
-    let message = req.flash("notice") || "";
+    let message = req.flash("notice") || ""; // Default to empty string if message is not set
+
+    // Get validation errors
+    let errors = validationResult(req);
+
     res.render("account/login", {
       title: "Login",
       nav,
-      message,
+      message: message, // Make sure message is passed to the view
+      errors: errors.isEmpty() ? null : errors.array(), // Only pass errors if any exist
     });
   } catch (err) {
     console.error("Error while building login page:", err);
     next(err);
   }
 }
+
+
 
 /* ****************************************
  *  Deliver Register view
@@ -85,6 +93,38 @@ async function registerAccount(req, res) {
   }
 }
 
+/* ****************************************
+ *  Process Login Attempt
+ * *************************************** */
+async function loginAccount(req, res) {
+  const { account_email, account_password } = req.body;
 
+  try {
+    const account = await accountModel.checkAccountCredentials(
+      account_email,
+      account_password
+    );
 
-module.exports = { buildLogin, buildRegister, registerAccount };
+    if (account) {
+      req.flash("notice", `Welcome back, ${account.account_firstname}!`);
+      return res.status(200).redirect("/dashboard"); // Redirect to the dashboard or home page after successful login
+    } else {
+      req.flash("notice", "Invalid email or password. Please try again.");
+      return res.status(400).render("account/login", {
+        title: "Login",
+        message: "Invalid email or password.",
+        errors: null,
+      });
+    }
+  } catch (err) {
+    console.error("Error during login:", err);
+    return res.status(500).render("account/login", {
+      title: "Login",
+      message: "An error occurred during login.",
+      errors: null,
+    });
+  }
+}
+
+module.exports = { buildLogin, buildRegister, registerAccount, loginAccount };
+

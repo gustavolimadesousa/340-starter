@@ -40,4 +40,30 @@ async function checkExistingEmail(account_email) {
   }
 }
 
-module.exports = { registerAccount, checkExistingEmail };
+/* ***********************
+ * Check account credentials
+ * ********************* */
+async function checkAccountCredentials(account_email, account_password) {
+  try {
+    const sql = "SELECT * FROM account WHERE account_email = $1";
+    const result = await pool.query(sql, [account_email]);
+
+    if (result.rowCount > 0) {
+      const account = result.rows[0];
+
+      // If you're using bcrypt or another hashing library, compare hashed password here
+      if (account_password === account.account_password) {
+        return account; // Return the account if the credentials are correct
+      } else {
+        return null; // Return null if password doesn't match
+      }
+    } else {
+      return null; // Return null if the email doesn't exist
+    }
+  } catch (error) {
+    console.error("Database error:", error);
+    throw new Error("Error checking account credentials");
+  }
+}
+
+module.exports = { registerAccount, checkExistingEmail, checkAccountCredentials };

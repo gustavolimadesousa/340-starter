@@ -78,4 +78,54 @@ validate.checkRegData = async (req, res, next) => {
   next();
 };
 
+/* **********************************
+ *  Login Data Validation Rules
+ * ********************************* */
+validate.loginRules = () => {
+  return [
+    // Email validation: must be a valid email format
+    body("account_email")
+      .trim()
+      .isEmail()
+      .normalizeEmail()
+      .withMessage("A valid email is required."),
+
+    // Password validation: must meet certain security requirements (same as in registration)
+    body("account_password")
+      .trim()
+      .notEmpty()
+      .isStrongPassword({
+        minLength: 12,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,
+      })
+      .withMessage(
+        "Password does not meet the required strength (minimum 12 characters, one uppercase letter, one number, one special character)."
+      ),
+  ];
+};
+
+/* ******************************
+ * Check data and return errors or continue to login
+ * ***************************** */
+validate.checkLoginData = async (req, res, next) => {
+  const { account_email, account_password } = req.body;
+  let errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav();
+    res.render("account/login", {
+      errors,
+      title: "Login",
+      nav,
+      account_email, // Preserve entered email in case of errors
+    });
+    return;
+  }
+  next();
+};
+
+
 module.exports = validate;
