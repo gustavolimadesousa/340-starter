@@ -3,37 +3,44 @@
     <%= title %>
   </h1>
 
-  <% if (message) { %>
-    <div class="flash-message">
-      <%- message %>
-    </div>
-    <% } %>
+<% if (typeof message !=="undefined" && message.length> 0) { %>
+  <div class="flash-message">
+    <%= message %>
+  </div>
+  <% } %>
 
-      <form action="/account/register" method="post" class="register-form">
-        <label for="account_firstname">First Name:</label>
-        <input type="text" id="account_firstname" name="account_firstname" required>
+      <% if (errors) { %>
+        <ul class="notice">
+          <% errors.array().forEach(error=> { %>
+            <li><%- error.msg %></li>
+            <% }) %>
+        </ul>
+        <% } %>
 
-        <label for="account_lastname">Last Name:</label>
-        <input type="text" id="account_lastname" name="account_lastname" required>
+          <form action="/account/register" method="post" class="register-form">
+            <label for="account_firstname">First Name:</label>
+            <input type="text" id="account_firstname" name="account_firstname" required>
 
-        <label for="account_email">Email Address:</label>
-        <input type="email" id="account_email" name="account_email" required>
+            <label for="account_lastname">Last Name:</label>
+            <input type="text" id="account_lastname" name="account_lastname" required>
 
-        <label for="account_password">Password:</label>
-        <div class="password-toggle">
-          <input type="password" id="account_password" name="account_password" required pattern="(?=.*\d)(?=.*[A-Z])(?=.*\W).{12,}" title="Must be at least 12 characters long, include at least one uppercase letter, one number, and one special character.">
-          <button type="button" id="togglePassword" class="toggle-password">👁️</button>
-        </div>
-        <p class="password-requirements">Must be at least 12 characters, include one uppercase letter, one number, and one special character.</p>
+            <label for="account_email">Email Address:</label>
+            <input type="email" id="account_email" name="account_email" required>
 
-        <button type="submit">Register</button>
-      </form>
+            <label for="account_password">Password:</label>
+            <div class="password-toggle">
+              <input type="password" id="account_password" name="account_password" required pattern="(?=.*\d)(?=.*[A-Z])(?=.*\W).{12,}" title="Must be at least 12 characters long, include at least one uppercase letter, one number, and one special character.">
+              <button type="button" id="togglePassword" class="toggle-password">👁️</button>
+            </div>
+            <p class="password-requirements">Must be at least 12 characters, include one uppercase letter, one number, and one special character.</p>
 
-      <p class="login-link">Already have an account? <a href="/account/login">Log in</a></p>
+            <button type="submit">Register</button>
+          </form>
+
+          <p class="login-link">Already have an account? <a href="/account/login">Log in</a></p>
 </div>
 
 <script>
-  // Toggle password visibility
   document.getElementById("togglePassword").addEventListener("click", function () {
     const passwordField = document.getElementById("account_password");
     if (passwordField.type === "password") {

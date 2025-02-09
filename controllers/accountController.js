@@ -4,44 +4,40 @@ const accountModel = require("../models/account-model");
 /* ****************************************
  *  Deliver login view
  * *************************************** */
-
 async function buildLogin(req, res, next) {
   try {
     let nav = await utilities.getNav();
-    // Use an empty string as fallback if no message is set
     let message = req.flash("notice") || "";
     res.render("account/login", {
       title: "Login",
       nav,
-      message, // Pass message to the view
+      message,
     });
   } catch (err) {
     console.error("Error while building login page:", err);
-    next(err); // Pass the error to the error handler
+    next(err);
   }
 }
-
-
-
 
 /* ****************************************
  *  Deliver Register view
  * *************************************** */
-
 async function buildRegister(req, res, next) {
   try {
     let nav = await utilities.getNav();
-    let message = "";
+    let message = req.flash("notice"); // Certifica-se de pegar mensagens flash corretamente
     res.render("account/register", {
       title: "Register",
       nav,
-      message,
+      message: message.length > 0 ? message[0] : "", // Evita erro de variável indefinida
+      errors: null,
     });
   } catch (err) {
     console.error("Error loading register page:", err);
     next(err);
   }
 }
+
 
 /* ****************************************
  *  Process Registration
@@ -55,33 +51,40 @@ async function registerAccount(req, res) {
     account_password,
   } = req.body;
 
-  const regResult = await accountModel.registerAccount(
-    account_firstname,
-    account_lastname,
-    account_email,
-    account_password
-  );
-
-  if (regResult) {
-    // Set a flash message for successful registration
-    req.flash(
-      "notice",
-      `Congratulations, you\'re registered ${account_firstname}. Please log in.`
+  try {
+    const regResult = await accountModel.registerAccount(
+      account_firstname,
+      account_lastname,
+      account_email,
+      account_password
     );
 
-    // Redirect to login page after registration
-    res.status(201).redirect("/account/login"); // Redirect to login page
-  } else {
-    // Set a flash message for failed registration
-    req.flash("notice", "Sorry, the registration failed.");
-
-    // Render the registration page again with the failure message
-    res.status(501).render("account/register", {
+    if (regResult) {
+      req.flash(
+        "notice",
+        `Congratulations, you're registered ${account_firstname}. Please log in.`
+      );
+      return res.status(201).redirect("/account/login");
+    } else {
+      req.flash("notice", "Sorry, the registration failed.");
+      return res.status(500).render("account/register", {
+        title: "Registration",
+        nav,
+        message: "Sorry, the registration failed.",
+        errors: null,
+      });
+    }
+  } catch (err) {
+    console.error("Error during registration:", err);
+    return res.status(500).render("account/register", {
       title: "Registration",
       nav,
+      message: "An error occurred during registration.",
+      errors: null,
     });
   }
 }
+
 
 
 module.exports = { buildLogin, buildRegister, registerAccount };

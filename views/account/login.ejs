@@ -14,7 +14,8 @@
         <input type="email" id="account_email" name="account_email" required>
 
         <label for="account_password">Password:</label>
-        <input type="password" id="account_password" name="account_password" required>
+        <input type="password" id="account_password" name="account_password" required pattern="(?=.*\d)(?=.*[A-Z])(?=.*\W).{12,}" title="Must be at least 12 characters long, include at least one uppercase letter, one number, and one special character.">
+        <p class="password-requirements">Must be at least 12 characters, include one uppercase letter, one number, and one special character.</p>
 
         <button type="submit">Login</button>
       </form>
