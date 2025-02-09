@@ -1,4 +1,3 @@
-
 const express = require("express");
 const router = new express.Router();
 const invController = require("../controllers/invController");
@@ -15,5 +14,11 @@ router.get(
   "/detail/:invId",
   utilities.handleErrors(invController.buildDetailView)
 );
+
+// Add a new route for the management view
+router.get("/",
+  utilities.handleErrors(invController.buildManagementView)  // Render the management view
+);
+
 
 module.exports = router;

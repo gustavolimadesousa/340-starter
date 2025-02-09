@@ -1,5 +1,3 @@
-// 
-
 const invModel = require("../models/inventory-model");
 const utilities = require("../utilities/");
 
@@ -64,3 +62,22 @@ invCont.buildDetailView = async function (req, res, next) {
   }
 };
 
+// Add the buildManagementView function to render the management page
+invCont.buildManagementView = async function (req, res, next) {
+  try {
+    // Prepare the necessary data (flash messages and navigation)
+    let nav = await utilities.getNav();
+
+    // Flash message for testing
+    req.flash("info", "Welcome to the Inventory Management Page!");
+
+    res.render("./inventory/management", {
+      title: "Inventory Management",
+      nav,
+      messages: req.flash("info"), // Flash messages (e.g., success or error messages)
+    });
+  } catch (error) {
+    console.error("Error building management view:", error);
+    next(error); // Pass to the next error handler
+  }
+};

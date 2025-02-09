@@ -367,6 +367,37 @@ color: #fff;
 }
 
 
+/* MANAGEMENT PAGE */
+
+.btn {
+  padding: 10px;
+  background-color: #01b0d3;
+  color: white;
+  border-radius: 5px;
+  text-align: center;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #0091b0;
+}
+
+.management-options {
+  margin-top: 20px;
+
+}
+
+.management-options h2 {
+  margin-bottom: 10px;
+}
+
+.management-options .btn {
+  margin-bottom: 10px;
+}
+
+
 
 /* Full-Screen Media Query */
 
