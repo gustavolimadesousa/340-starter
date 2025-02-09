@@ -19,11 +19,25 @@ async function registerAccount(
       account_password,
     ]);
 
-    return result.rows[0]; // Retorna o novo usuário criado
+    return result.rows[0]; // Return the newly created user
   } catch (error) {
-    console.error("Database error:", error); // Log do erro no servidor
-    throw new Error("Failed to register account"); // Lança uma exceção para ser capturada pelo controller
+    console.error("Database error:", error); // Log the error on the server
+    throw new Error("Failed to register account"); // Throw an exception to be handled by the controller
   }
 }
 
-module.exports = { registerAccount };
+/* **********************
+ *   Check for existing email
+ * ********************* */
+async function checkExistingEmail(account_email) {
+  try {
+    const sql = "SELECT * FROM account WHERE account_email = $1";
+    const email = await pool.query(sql, [account_email]);
+    return email.rowCount; // Return the number of emails found
+  } catch (error) {
+    console.error("Database error:", error);
+    return error.message;
+  }
+}
+
+module.exports = { registerAccount, checkExistingEmail };
