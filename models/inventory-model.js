@@ -39,8 +39,25 @@ async function getVehicleById(invId) {
   }
 }
 
+// Add a new classification
+async function addClassification(classification_name) {
+  try {
+    const query = `
+      INSERT INTO public.classification (classification_name)
+      VALUES ($1)
+      RETURNING *;
+    `;
+    const result = await pool.query(query, [classification_name]);
+    return result.rows[0];
+  } catch (error) {
+    console.error("addClassification error:", error);
+    throw error;
+  }
+}
+
 module.exports = {
   getClassifications,
   getInventoryByClassificationId,
   getVehicleById,
+  addClassification, // Adicione esta função
 };

@@ -1,0 +1,34 @@
+<h1>Add New Classification</h1>
+
+<!-- Display Flash Messages -->
+<% if (messages.length> 0) { %>
+  <div class="alert alert-info">
+    <% messages.forEach(function(message) { %>
+      <p>
+        <%= message %>
+      </p>
+      <% }) %>
+  </div>
+  <% } %>
+
+    <!-- Display Validation Errors -->
+    <% if (errors && errors.length> 0) { %>
+      <div class="alert alert-danger">
+        <ul>
+          <% errors.forEach(function(error) { %>
+            <li>
+              <%= error.msg %>
+            </li>
+            <% }) %>
+        </ul>
+      </div>
+      <% } %>
+
+        <!-- Add Classification Form -->
+        <form action="/inv/add-classification" method="POST">
+          <div class="form-group">
+            <label for="classification_name">Classification Name:</label>
+            <input type="text" id="classification_name" name="classification_name" class="form-control" required pattern="^[A-Za-z0-9]+$" title="Classification name must not contain spaces or special characters." />
+          </div>
+          <button type="submit" class="btn btn-primary">Add Classification</button>
+        </form>

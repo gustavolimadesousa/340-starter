@@ -1,23 +1,22 @@
 
-
   <h1>Inventory Management</h1>
 
-    <!-- Display Flash Message -->
-    <% if (messages.length> 0) { %>
-      <div class="alert alert-info">
-        <% messages.forEach(function(message) { %>
-          <p>
-            <%= message %>
-          </p>
-          <% }) %>
+  <!-- Display Flash Messages -->
+  <% if (messages.length> 0) { %>
+    <div class="alert alert-info">
+      <% messages.forEach(function(message) { %>
+        <p>
+          <%= message %>
+        </p>
+        <% }) %>
+    </div>
+    <% } %>
+
+      <div class="management-options">
+        <h2>Manage Classifications</h2>
+        <a href="/inv/add-classification" class="btn btn-primary">Add New Classification</a>
+
+        <h2>Manage Inventory</h2>
+        <a href="/inv/add-inventory" class="btn btn-primary">Add New Inventory Item</a>
       </div>
-      <% } %>
-
-        <div class="management-options">
-          <h2>Manage Classifications</h2>
-          <a href="/inv/add-classification" class="btn btn-primary">Add New Classification</a>
-
-          <h2>Manage Inventory</h2>
-          <a href="/inv/add-inventory" class="btn btn-primary">Add New Inventory Item</a>
-        </div>
 

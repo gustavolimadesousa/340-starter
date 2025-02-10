@@ -27,7 +27,7 @@ invCont.buildByClassificationId = async function (req, res, next) {
   }
 };
 
-module.exports = invCont;
+
 
 // Build inventory detail view
 invCont.buildDetailView = async function (req, res, next) {
@@ -81,3 +81,42 @@ invCont.buildManagementView = async function (req, res, next) {
     next(error); // Pass to the next error handler
   }
 };
+
+// Render the add classification form
+invCont.buildAddClassification = async function (req, res, next) {
+  try {
+    let nav = await utilities.getNav();
+    res.render("inventory/add-classification", {
+      title: "Add Classification",
+      nav,
+      messages: req.flash(),
+      errors: [], // Pass an empty errors array
+    });
+  } catch (error) {
+    console.error("Error building add classification view:", error);
+    next(error);
+  }
+};
+
+// Handle the form submission
+invCont.addClassification = async function (req, res, next) {
+  const { classification_name } = req.body;
+
+  try {
+    // Insert the new classification into the database
+    await invModel.addClassification(classification_name);
+
+    // Flash a success message
+    req.flash("info", `Classification "${classification_name}" added successfully.`);
+
+    // Redirect to the management view
+    res.redirect("/inv/management");
+  } catch (error) {
+    console.error("Error adding classification:", error);
+    req.flash("error", "Failed to add classification. Please try again.");
+    res.redirect("/inv/add-classification");
+  }
+};
+
+
+module.exports = invCont;
