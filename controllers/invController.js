@@ -119,4 +119,92 @@ invCont.addClassification = async function (req, res, next) {
 };
 
 
+// In buildAddInventory controller
+invCont.buildAddInventory = async function (req, res, next) {
+  try {
+    const nav = await utilities.getNav();
+    const classificationList = await utilities.buildClassificationList();
+    
+    res.render("inventory/add-inventory", {
+      title: "Add New Vehicle", // Required title
+      nav,
+      classificationList,
+      formData: {},
+      messages: req.flash(),
+      errors: []
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Process Inventory Addition
+invCont.addInventory = async function (req, res, next) {
+  const { classification_id, inv_make, inv_model, inv_year, inv_description, 
+          inv_image, inv_thumbnail, inv_price, inv_miles, inv_color } = req.body;
+
+  // Server-side validation
+  const errors = [];
+  if (!classification_id) errors.push({ msg: "Classification is required" });
+  if (!inv_make) errors.push({ msg: "Make is required" });
+  if (!inv_model) errors.push({ msg: "Model is required" });
+  if (!inv_year || inv_year < 1900) errors.push({ msg: "Valid year between 1900 and current year+1 required" });
+  if (!inv_price || inv_price <= 0) errors.push({ msg: "Valid price greater than 0 required" });
+  if (inv_miles < 0) errors.push({ msg: "Miles must be 0 or greater" });
+  if (!inv_color) errors.push({ msg: "Color is required" });
+
+  // Always get fresh navigation data
+  const nav = await utilities.getNav();
+  
+  // If there are validation errors, render the form again with the errors
+  if (errors.length > 0) {
+    const classificationList = await utilities.buildClassificationList(classification_id);
+    return res.render("inventory/add-inventory", {
+      title: "Add New Vehicle",
+      nav,
+      classificationList,
+      formData: req.body,
+      messages: req.flash(),
+      errors
+    });
+  }
+
+  try {
+    // Create inventory data object
+    const invData = {
+      classification_id,
+      inv_make,
+      inv_model,
+      inv_year: parseInt(inv_year),
+      inv_description,
+      inv_image: inv_image || '/images/vehicles/no-image.png',
+      inv_thumbnail: inv_thumbnail || '/images/vehicles/no-image-tn.png',
+      inv_price: parseFloat(inv_price),
+      inv_miles: parseInt(inv_miles),
+      inv_color
+    };
+
+    // Insert into database
+    await invModel.addInventory(invData);
+
+    // Flash success message and redirect
+    req.flash("info", `Successfully added ${inv_make} ${inv_model}`);
+    res.redirect("/inv/management");
+  } catch (error) {
+    console.error("Inventory addition error:", error);
+    const classificationList = await utilities.buildClassificationList(classification_id);
+    
+    req.flash("error", "Failed to add inventory item. Please try again.");
+    res.render("inventory/add-inventory", {
+      title: "Add New Vehicle",
+      nav,
+      classificationList,
+      formData: req.body,
+      messages: req.flash(),
+      errors: [{ msg: "Database error occurred. Please check your input." }]
+    });
+  }
+};
+
+
 module.exports = invCont;

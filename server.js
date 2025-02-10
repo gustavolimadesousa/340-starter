@@ -85,7 +85,11 @@ app.use(async (err, req, res, next) => {
   console.error(err.stack);
   const nav = await utilities.getNav();
   res.status(err.status || 500);
-  res.render("errors/error", { title: "Error", message: err.message, nav });
+  res.render("errors/error", {
+    title: "Error", // Add title here
+    message: err.message,
+    nav,
+  });
 });
 
 const port = process.env.PORT || 3000;

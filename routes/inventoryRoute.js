@@ -6,6 +6,10 @@ const {
   validateClassification,
   handleValidationErrors,
 } = require("../utilities/validation");
+const {
+  validateInventory,
+  handleInventoryValidation,
+} = require("../utilities/validation");
 
 
 // Route to build inventory by classification view
@@ -21,7 +25,7 @@ router.get(
 );
 
 // Add a new route for the management view
-router.get("/",
+router.get("/management",
   utilities.handleErrors(invController.buildManagementView)  // Render the management view
 );
 
@@ -37,6 +41,21 @@ router.post(
   validateClassification,
   handleValidationErrors,
   utilities.handleErrors(invController.addClassification)
+);
+
+
+// GET route to display add inventory form
+router.get(
+  "/add-inventory",
+  utilities.handleErrors(invController.buildAddInventory)
+);
+
+// POST route to handle form submission
+router.post(
+  "/add-inventory",
+  validateInventory,
+  handleInventoryValidation,
+  utilities.handleErrors(invController.addInventory)
 );
 
 

@@ -5,7 +5,7 @@ const utilities = {};
  * Constructs the nav HTML unordered list
  ************************** */
 utilities.getNav = async function (req, res, next) {
-  let data = await invModel.getClassifications();
+  let data = await invModel.getClassifications(); // Chamada da função corretamente aqui
 
   let list = "<ul>";
   list += '<li><a href="/" title="Home page">Home</a></li>';
@@ -114,5 +114,24 @@ utilities.wrapVehicleInHTML = function (vehicle) {
  **************************************** */
 utilities.handleErrors = (fn) => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next);
+
+utilities.buildClassificationList = async function (classification_id = null) {
+  const data = await invModel.getClassifications();
+  let list =
+    '<select name="classification_id" id="classificationList" class="form-control" required>';
+  list += '<option value="">Choose a Classification</option>';
+  data.rows.forEach((row) => {
+    list += `<option value="${row.classification_id}"`;
+    if (
+      classification_id != null &&
+      row.classification_id == classification_id
+    ) {
+      list += " selected";
+    }
+    list += `>${row.classification_name}</option>`;
+  });
+  list += "</select>";
+  return list;
+};
 
 module.exports = utilities;

@@ -1,0 +1,102 @@
+<h1 class="form-title">Add New Vehicle</h1>
+
+<div class="form-container">
+  <!-- Flash Messages -->
+  <% if (messages.info && messages.info.length> 0) { %>
+    <div class="alert alert-info">
+      <% messages.info.forEach(function(message) { %>
+        <p class="mb-0">
+          <%= message %>
+        </p>
+        <% }) %>
+    </div>
+    <% } %>
+
+      <% if (messages.error && messages.error.length> 0) { %>
+        <div class="alert alert-danger">
+          <% messages.error.forEach(function(message) { %>
+            <p class="mb-0">
+              <%= message %>
+            </p>
+            <% }) %>
+        </div>
+        <% } %>
+
+          <!-- Validation Errors -->
+          <% if (errors && errors.length> 0) { %>
+            <div class="alert alert-danger">
+              <ul class="mb-0">
+                <% errors.forEach(function(error) { %>
+                  <li>
+                    <%= error.msg %>
+                  </li>
+                  <% }) %>
+              </ul>
+            </div>
+            <% } %>
+
+              <form method="POST" action="/inv/add-inventory">
+                <!-- Classification Dropdown -->
+                <div class="form-group">
+                  <label for="classificationList">Classification:</label>
+                  <%- classificationList %>
+                </div>
+
+                <!-- Make -->
+                <div class="form-group">
+                  <label for="inv_make">Make:</label>
+                  <input type="text" id="inv_make" name="inv_make" class="form-control" required pattern="^[A-Za-z0-9]+$" title="No special characters allowed" value="<%= formData.inv_make || '' %>">
+                </div>
+
+                <!-- Model -->
+                <div class="form-group">
+                  <label for="inv_model">Model:</label>
+                  <input type="text" id="inv_model" name="inv_model" class="form-control" required pattern="^[A-Za-z0-9]+$" title="No special characters allowed" value="<%= formData.inv_model || '' %>">
+                </div>
+
+                <!-- Year -->
+                <div class="form-group">
+                  <label for="inv_year">Year:</label>
+                  <input type="number" id="inv_year" name="inv_year" class="form-control" required min="1900" max="<%= new Date().getFullYear() + 1 %>" value="<%= formData.inv_year || '' %>">
+                </div>
+
+                <!-- Description -->
+                <div class="form-group">
+                  <label for="inv_description">Description:</label>
+                  <textarea id="inv_description" name="inv_description" class="form-control" required><%= formData.inv_description || '' %></textarea>
+                </div>
+
+                <!-- Image Path -->
+                <div class="form-group">
+                  <label for="inv_image">Image Path:</label>
+                  <input type="text" id="inv_image" name="inv_image" class="form-control" value="<%= formData.inv_image || '/images/vehicles/no-image.png' %>">
+                </div>
+
+                <!-- Thumbnail Path -->
+                <div class="form-group">
+                  <label for="inv_thumbnail">Thumbnail Path:</label>
+                  <input type="text" id="inv_thumbnail" name="inv_thumbnail" class="form-control" value="<%= formData.inv_thumbnail || '/images/vehicles/no-image-tn.png' %>">
+                </div>
+
+                <!-- Price -->
+                <div class="form-group">
+                  <label for="inv_price">Price:</label>
+                  <input type="number" id="inv_price" name="inv_price" class="form-control" required step="0.01" min="0.01" value="<%= formData.inv_price || '' %>">
+                </div>
+
+                <!-- Miles -->
+                <div class="form-group">
+                  <label for="inv_miles">Miles:</label>
+                  <input type="number" id="inv_miles" name="inv_miles" class="form-control" required min="0" value="<%= formData.inv_miles || '' %>">
+                </div>
+
+                <!-- Color -->
+                <div class="form-group">
+                  <label for="inv_color">Color:</label>
+                  <input type="text" id="inv_color" name="inv_color" class="form-control" required value="<%= formData.inv_color || '' %>">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Add Vehicle</button>
+                <a href="/inv/management" class="btn btn-secondary">Cancel</a>
+              </form>
+</div>

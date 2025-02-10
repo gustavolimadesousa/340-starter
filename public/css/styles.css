@@ -65,7 +65,7 @@ nav ul {
 }
 
 nav a {
-color: #fff;
+  color: #fff;
 }
 
 /* INTRO */
@@ -124,7 +124,6 @@ color: #fff;
   background-color: #01b0d3;
   display: grid;
   text-align: center;
-  border-radius: 5px;
 }
 
 .upgrade-box img {
@@ -146,7 +145,6 @@ color: #fff;
 }
 
 /* INVENTORY PAGE */
-
 
 #inv-display {
   display: grid;
@@ -183,189 +181,188 @@ color: #fff;
 }
 
 /* vehicle detail */
- .vehicle-detail-container {
-            display: flex;
-            flex-wrap: wrap;
-            max-width: 800px;
-            background: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            overflow: hidden;
-            margin: 20px auto;
-        }
-        
-        .vehicle-image {
-            flex: 1;
-            min-width: 300px;
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        
-        .vehicle-info {
-            flex: 1;
-            padding: 20px;
-            min-width: 300px;
-        }
+.vehicle-detail-container {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 800px;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 20px auto;
+}
+
+.vehicle-image {
+  flex: 1;
+  min-width: 300px;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.vehicle-info {
+  flex: 1;
+  padding: 20px;
+  min-width: 300px;
+}
 
 /* LOGIN PAGE */
 
 .login-container {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 20px;
-    background: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    text-align: center;
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  text-align: center;
 }
 
 .flash-message {
-    color: red;
-    margin-bottom: 10px;
-    font-weight: bold;
+  color: red;
+  margin-bottom: 10px;
+  font-weight: bold;
 }
 
 .login-container h1 {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
 }
 
 .login-form {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .login-form label {
-    text-align: left;
-    font-weight: bold;
-    margin-top: 10px;
+  text-align: left;
+  font-weight: bold;
+  margin-top: 10px;
 }
 
 .login-form input {
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
 }
 
 .login-form button {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #01b0d3;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #01b0d3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
 }
 
 .login-form button:hover {
-    background-color: #0091b0;
+  background-color: #0091b0;
 }
 
 .register-link {
-    margin-top: 15px;
+  margin-top: 15px;
 }
 
 .register-link a {
-    color: #01b0d3;
-    font-weight: bold;
+  color: #01b0d3;
+  font-weight: bold;
 }
 
 /* REGISTER PAGE */
 
 .register-container {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 20px;
-    background: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    text-align: center;
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  text-align: center;
 }
 
 .flash-message {
-    color: red;
-    margin-bottom: 10px;
-    font-weight: bold;
+  color: red;
+  margin-bottom: 10px;
+  font-weight: bold;
 }
 
 .register-container h1 {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
 }
 
 .register-form {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .register-form label {
-    text-align: left;
-    font-weight: bold;
-    margin-top: 10px;
+  text-align: left;
+  font-weight: bold;
+  margin-top: 10px;
 }
 
 .register-form input {
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
 }
 
 .password-requirements {
-    font-size: 0.9rem;
-    color: #666;
-    text-align: left;
-    margin-top: 5px;
+  font-size: 0.9rem;
+  color: #666;
+  text-align: left;
+  margin-top: 5px;
 }
 
 .password-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .password-toggle input {
-    flex: 1;
+  flex: 1;
 }
 
 .toggle-password {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-    color: #01b0d3;
-    padding-left: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #01b0d3;
+  padding-left: 10px;
 }
 
 .register-form button {
-    margin-top: 6px;
-    padding: 10px;
-    background-color: #01b0d3;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
+  margin-top: 6px;
+  padding: 10px;
+  background-color: #01b0d3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
 }
 
 .register-form button:hover {
-    background-color: #0091b0;
+  background-color: #0091b0;
 }
 
 .login-link {
-    margin-top: 15px;
+  margin-top: 15px;
 }
 
 .login-link a {
-    color: #01b0d3;
-    font-weight: bold;
+  color: #01b0d3;
+  font-weight: bold;
 }
-
 
 /* MANAGEMENT PAGE */
 
@@ -386,7 +383,6 @@ color: #fff;
 
 .management-options {
   margin-top: 20px;
-
 }
 
 .management-options h2 {
@@ -397,7 +393,84 @@ color: #fff;
   margin-bottom: 10px;
 }
 
+/* Form Container */
+.form-title {
+  text-align: center;
+  margin-top: 40px;
+}
 
+.form-container {
+    max-width: 600px; /* Set a max width for the form */
+    margin: 20px auto; /* Center the form */
+    padding: 20px; /* Add padding */
+    background: white; /* White background for the form */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border-radius: 8px; /* Rounded corners */
+}
+
+/* Form Group */
+.form-group {
+    margin-bottom: 15px; /* Space between form groups */
+}
+
+/* Form Labels */
+.form-group label {
+    font-weight: bold; /* Bold labels */
+    margin-bottom: 5px; /* Space below labels */
+    display: block; /* Block display for labels */
+}
+
+/* Form Inputs */
+.form-group input,
+.form-group textarea {
+    padding: 10px; /* Padding inside inputs */
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 5px; /* Rounded corners */
+    width: 100%; /* Full width */
+}
+
+/* Form Buttons */
+.btn {
+    padding: 10px; /* Padding for buttons */
+    background-color: #01b0d3; /* Primary button color */
+    color: white; /* Text color */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    border: none; /* No border */
+    font-size: 1rem; /* Font size */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.btn:hover {
+    background-color: #0091b0; /* Darker shade on hover */
+}
+
+/* Flash Messages */
+.alert {
+    margin-bottom: 20px; /* Space below alerts */
+    padding: 10px; /* Padding inside alerts */
+    border-radius: 5px; /* Rounded corners */
+}
+
+.alert-info {
+    background-color: #d1ecf1; /* Light blue background */
+    color: #0c5460; /* Dark blue text */
+}
+
+.alert-danger {
+    background-color: #f8d7da; /* Light red background */
+    color: #721c24; /* Dark red text */
+}
+
+/* Validation Errors */
+.alert-danger ul {
+    list-style-type: none; /* Remove list style */
+    padding-left: 0; /* Remove padding */
+}
+
+.alert-danger li {
+    margin-bottom: 5px; /* Space between error messages */
+}
 
 /* Full-Screen Media Query */
 
