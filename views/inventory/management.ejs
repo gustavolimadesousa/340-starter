@@ -1,22 +1,51 @@
+<h1>Inventory Management</h1>
 
-  <h1>Inventory Management</h1>
+<!-- Display Flash Messages -->
+<% if (messages && messages.length> 0) { %>
+  <div class="alert alert-info">
+    <% messages.forEach(function(message) { %>
+      <p>
+        <%= message %>
+      </p>
+      <% }) %>
+  </div>
+  <% } %>
 
-  <!-- Display Flash Messages -->
-  <% if (messages.length> 0) { %>
-    <div class="alert alert-info">
-      <% messages.forEach(function(message) { %>
-        <p>
-          <%= message %>
-        </p>
-        <% }) %>
+    <div class="management-options">
+      <h2>Manage Classifications</h2>
+      <a href="/inv/add-classification" class="btn btn-primary">Add New Classification</a>
+
+      <h2>Manage Inventory</h2>
+      <a href="/inv/add-inventory" class="btn btn-primary">Add New Inventory Item</a>
     </div>
-    <% } %>
 
-      <div class="management-options">
-        <h2>Manage Classifications</h2>
-        <a href="/inv/add-classification" class="btn btn-primary">Add New Classification</a>
+    <!-- Inventory Selection -->
+    <h2>Manage Inventory</h2>
+    <p>Select a classification from the list below to see the items belonging to that classification.</p>
 
-        <h2>Manage Inventory</h2>
-        <a href="/inv/add-inventory" class="btn btn-primary">Add New Inventory Item</a>
-      </div>
+    <!-- EJS Code Block to Display Classification List -->
+    <form id="classificationForm">
+      <label for="classificationList">Select Classification:</label>
+      <label for="classificationList">Select Classification:</label>
+      <select id="classificationList" name="classification">
+        <option value="">-- Choose a Classification --</option>
+        <% if (classifications && classifications.length> 0) { %>
+          <% classifications.forEach((classification)=> { %>
+            <option value="<%= classification.classification_id %>">
+              <%= classification.classification_name %>
+            </option>
+            <% }); %>
+              <% } else { %>
+                <option value="">No classifications available</option>
+                <% } %>
+      </select>
+    </form>
 
+    <!-- Inventory Display Table -->
+    <table id="inventoryDisplay"></table>
+
+    <!-- Message if JavaScript is Disabled -->
+    <noscript>JavaScript must be enabled to use this page.</noscript>
+
+    <!-- Link to JavaScript File -->
+    <script src="../../js/inventory.js"></script>

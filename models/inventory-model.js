@@ -1,12 +1,38 @@
 
 const pool = require("../database/");
 
-// Get all classification data
+
 async function getClassifications() {
-  return await pool.query(
-    "SELECT * FROM public.classification ORDER BY classification_name"
-  );
+  try {
+    const result = await pool.query("SELECT classification_id, classification_name FROM classification");
+    return result.rows; // Certifique-se de que está retornando os dados corretamente
+  } catch (error) {
+    console.error("Error fetching classifications:", error);
+    return [];
+  }
 }
+
+
+// // Get all classification data
+// async function getClassifications() {
+//   return await pool.query(
+//     "SELECT * FROM public.classification ORDER BY classification_name"
+//   );
+// }
+
+// async function getClassifications() {
+//   try {
+//     const result = await pool.query(
+//       "SELECT classification_id, classification_name FROM classification ORDER BY classification_name"
+//     );
+//     return result; // Return the full query result object
+//   } catch (error) {
+//     console.error("Error fetching classifications:", error);
+//     return { rows: [] }; // Mimic the structure even in errors
+//   }
+// }
+
+
 
 // Get all inventory items and classification_name by classification_id
 async function getInventoryByClassificationId(classification_id) {

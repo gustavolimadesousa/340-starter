@@ -65,20 +65,26 @@ invCont.buildDetailView = async function (req, res, next) {
 // Add the buildManagementView function to render the management page
 invCont.buildManagementView = async function (req, res, next) {
   try {
-    // Prepare the necessary data (flash messages and navigation)
     let nav = await utilities.getNav();
+    const classifications = await invModel.getClassifications();
 
-    // Flash message for testing
-    req.flash("info", "Welcome to the Inventory Management Page!");
+    // DEBUG: Verify data structure
+    console.log("Management view classifications:", classifications);
+    console.log(
+      "Type:",
+      Array.isArray(classifications) ? "Array" : typeof classifications
+    );
+    console.log("First item:", classifications[0]);
 
     res.render("./inventory/management", {
       title: "Inventory Management",
       nav,
-      messages: req.flash("info"), // Flash messages (e.g., success or error messages)
+      classifications: classifications,
+      messages: req.flash("info"),
     });
   } catch (error) {
     console.error("Error building management view:", error);
-    next(error); // Pass to the next error handler
+    next(error);
   }
 };
 
@@ -138,11 +144,11 @@ invCont.buildAddInventory = async function (req, res, next) {
   }
 };
 
+
 // Process Inventory Addition
 invCont.addInventory = async function (req, res, next) {
   const { classification_id, inv_make, inv_model, inv_year, inv_description, 
           inv_image, inv_thumbnail, inv_price, inv_miles, inv_color } = req.body;
-
   // Server-side validation
   const errors = [];
   if (!classification_id) errors.push({ msg: "Classification is required" });
@@ -152,7 +158,6 @@ invCont.addInventory = async function (req, res, next) {
   if (!inv_price || inv_price <= 0) errors.push({ msg: "Valid price greater than 0 required" });
   if (inv_miles < 0) errors.push({ msg: "Miles must be 0 or greater" });
   if (!inv_color) errors.push({ msg: "Color is required" });
-
   // Always get fresh navigation data
   const nav = await utilities.getNav();
   
@@ -168,7 +173,6 @@ invCont.addInventory = async function (req, res, next) {
       errors
     });
   }
-
   try {
     // Create inventory data object
     const invData = {
@@ -183,10 +187,8 @@ invCont.addInventory = async function (req, res, next) {
       inv_miles: parseInt(inv_miles),
       inv_color
     };
-
     // Insert into database
     await invModel.addInventory(invData);
-
     // Flash success message and redirect
     req.flash("info", `Successfully added ${inv_make} ${inv_model}`);
     res.redirect("/inv/management");
@@ -206,5 +208,18 @@ invCont.addInventory = async function (req, res, next) {
   }
 };
 
+
+/* ***************************
+ *  Return Inventory by Classification As JSON
+ * ************************** */
+invCont.getInventoryJSON = async (req, res, next) => {
+  const classification_id = parseInt(req.params.classification_id)
+  const invData = await invModel.getInventoryByClassificationId(classification_id)
+  if (invData[0].inv_id) {
+    return res.json(invData)
+  } else {
+    next(new Error("No data returned"))
+  }
+}
 
 module.exports = invCont;

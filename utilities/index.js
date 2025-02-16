@@ -6,12 +6,20 @@ require("dotenv").config();
 /* ************************
  * Constructs the nav HTML unordered list
  ************************** */
-utilities.getNav = async function (req, res, next) {
-  let data = await invModel.getClassifications(); // Chamada da função corretamente aqui
+utilities.getNav = async function () {
+  let data = await invModel.getClassifications(); // Chamada correta
+
+  console.log("Data received in getNav:", data); // Verifica se os dados estão corretos
+
+  if (!Array.isArray(data)) {
+    console.error("Error: getClassifications() did not return an array", data);
+    return "<ul><li>Error loading navigation</li></ul>";
+  }
 
   let list = "<ul>";
   list += '<li><a href="/" title="Home page">Home</a></li>';
-  data.rows.forEach((row) => {
+  data.forEach((row) => {
+    // Mudança: removendo `.rows`
     list += "<li>";
     list +=
       '<a href="/inv/type/' +
@@ -26,6 +34,7 @@ utilities.getNav = async function (req, res, next) {
   list += "</ul>";
   return list;
 };
+
 
 /* **************************************
  * Build the classification view HTML
@@ -122,7 +131,7 @@ utilities.buildClassificationList = async function (classification_id = null) {
   let list =
     '<select name="classification_id" id="classificationList" class="form-control" required>';
   list += '<option value="">Choose a Classification</option>';
-  data.rows.forEach((row) => {
+  data.forEach((row) => {
     list += `<option value="${row.classification_id}"`;
     if (
       classification_id != null &&
