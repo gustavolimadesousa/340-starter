@@ -18,41 +18,38 @@ const utilities = require("./utilities/");
 const errorRoute = require("./routes/errorRoute");
 const session = require("express-session");
 const pool = require("./database/");
-const accountRoute = require('./routes/accountRoute'); 
+const accountRoute = require("./routes/accountRoute");
 const bodyParser = require("body-parser");
-
-
+const cookieParser = require("cookie-parser");
 
 /* ***********************
  * Middleware
  * ************************/
- app.use(session({
-  store: new (require('connect-pg-simple')(session))({
-    createTableIfMissing: true,
-    pool,
-  }),
-  secret: process.env.SESSION_SECRET,
-  resave: true,
-  saveUninitialized: true,
-  name: 'sessionId',
-}));
+app.use(
+  session({
+    store: new (require("connect-pg-simple")(session))({
+      createTableIfMissing: true,
+      pool,
+    }),
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true,
+    name: "sessionId",
+  })
+);
 
-app.use(require('connect-flash')()); // Initialize flash messages
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+app.use(require("connect-flash")()); // Initialize flash messages
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
-
-
-
-
+app.use(cookieParser());
 
 // Express Messages Middleware
-app.use(require('connect-flash')())
-app.use(function(req, res, next){
-  res.locals.messages = require('express-messages')(req, res)
-  next()
-});  
-
+app.use(require("connect-flash")());
+app.use(function (req, res, next) {
+  res.locals.messages = require("express-messages")(req, res);
+  next();
+});
 
 /* ***********************
  * View Engine and Templates
@@ -62,7 +59,6 @@ app.use(expressLayouts);
 app.set("layout", "./layouts/layout"); // not at views root
 app.use(express.static("public"));
 
-
 /* ***********************
  * Routes
  *************************/
@@ -70,7 +66,7 @@ app.use(static);
 app.get("/", utilities.handleErrors(baseController.buildHome)); // Ensure this route is defined
 app.use("/inv", inventoryRoute);
 app.use("/error", errorRoute);
-app.use('/account', accountRoute); 
+app.use("/account", accountRoute);
 
 // File Not Found Route - must be last route in list
 app.use(async (req, res, next) => {
