@@ -108,10 +108,25 @@ async function addInventory(invData) {
   }
 }
 
+// Get inventory item by ID (for editing)
+async function getInventoryById(inv_id) {
+  try {
+    const data = await pool.query(
+      "SELECT * FROM public.inventory WHERE inv_id = $1",
+      [inv_id]
+    );
+    return data.rows[0];
+  } catch (error) {
+    console.error("getInventoryById error: " + error);
+    return null;
+  }
+}
+
 module.exports = {
   getClassifications,
   getInventoryByClassificationId,
   getVehicleById,
   addClassification,
   addInventory,
+  getInventoryById,
 };
