@@ -69,4 +69,12 @@ router.get(
   utilities.handleErrors(invController.editInventoryView)
 );
 
+// Add near other POST routes
+router.post(
+  "/update",
+  validateInventory, // Reuse your existing inventory validation
+  handleInventoryValidation,
+  utilities.handleErrors(invController.updateInventory)
+);
+
 module.exports = router;

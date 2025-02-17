@@ -37,7 +37,8 @@
             </div>
             <% } %>
 
-              <form method="POST" action="/inv/update">
+              <!-- Update Form -->
+              <form method="POST" action="/inv/update" id="updateForm">
                 <!-- Hidden Inventory ID -->
                 <input type="hidden" name="inv_id" value="<%= inv_id %>">
 
@@ -101,7 +102,11 @@
                   <input type="text" id="inv_color" name="inv_color" class="form-control" required value="<%= inv_color %>">
                 </div>
 
-                <button type="submit" class="btn btn-primary">Update Vehicle</button>
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary" disabled>Update Vehicle</button>
                 <a href="/inv/management" class="btn btn-secondary">Cancel</a>
               </form>
 </div>
+
+<!-- Link to Client-Side JavaScript -->
+<script src="/js/inv-update.js"></script>

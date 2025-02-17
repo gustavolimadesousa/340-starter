@@ -77,9 +77,28 @@ const handleInventoryValidation = async (req, res, next) => {
   next();
 };
 
+
+const checkUpdateData = (req, res, next) => {
+  // Reuse your existing inventory validation rules
+  req.check("inv_make").notEmpty();
+  req.check("inv_model").notEmpty();
+  // ... other validation rules
+
+  const errors = req.validationErrors();
+  if (errors) {
+    req.flash(
+      "error",
+      errors.map((err) => err.msg)
+    );
+    return res.redirect(`/inv/edit/${req.body.inv_id}`);
+  }
+  next();
+};
+
 module.exports = {
   validateClassification,
   handleValidationErrors,
   validateInventory,
   handleInventoryValidation,
+  checkUpdateData,
 };

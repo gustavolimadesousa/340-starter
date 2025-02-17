@@ -255,4 +255,68 @@ invCont.editInventoryView = async function (req, res, next) {
   }
 };
 
+/* ***************************
+ *  Update Inventory Data
+ * ************************** */
+invCont.updateInventory = async function (req, res, next) {
+  const {
+    inv_id,
+    inv_make,
+    inv_model,
+    inv_year,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_miles,
+    inv_color,
+    classification_id
+  } = req.body;
+
+  try {
+    const updateResult = await invModel.updateInventory(
+      inv_id,
+      inv_make,
+      inv_model,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_year,
+      inv_miles,
+      inv_color,
+      classification_id
+    );
+
+    if (updateResult) {
+      const itemName = `${updateResult.inv_make} ${updateResult.inv_model}`;
+      req.flash("notice", `Successfully updated ${itemName}`);
+      res.redirect("/inv/management");
+    } else {
+      throw new Error("Update failed");
+    }
+  } catch (error) {
+    const nav = await utilities.getNav();
+    const classificationSelect = await utilities.buildClassificationList(classification_id);
+    req.flash("error", "Update failed. Please check your inputs.");
+    res.render("inventory/edit-inventory", {
+      title: `Edit ${inv_make} ${inv_model}`,
+      nav,
+      classificationSelect,
+      errors: utilities.handleErrors(error),
+      inv_id,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+      classification_id
+    });
+  }
+};
+
 module.exports = invCont;
