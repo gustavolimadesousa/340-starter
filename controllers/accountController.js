@@ -173,11 +173,22 @@ async function buildAccountManagement(req, res, next) {
   }
 }
 
+async function accountLogout(req, res, next) {
+  try {
+    res.clearCookie("jwt");
+    res.redirect("/");
+  } catch (error) {
+    next(error);
+  }
+}
+
+
 module.exports = {
   buildLogin,
   buildRegister,
   registerAccount,
   accountLogin,
-  buildAccountManagement, 
+  buildAccountManagement,
+  accountLogout, 
 };
 
