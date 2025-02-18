@@ -181,5 +181,18 @@ utilities.checkJWTToken = (req, res, next) => {
   }
  }
 
+ /* ****************************************
+ *  Check Account Type (Employee or Admin)
+ * ************************************ */
+utilities.checkAccountType = function (req, res, next) {
+  const accountType = res.locals.accountData?.account_type;
+  if (accountType === "Employee" || accountType === "Admin") {
+    next();
+  } else {
+    req.flash("notice", "Access denied. You must be an Employee or Admin.");
+    res.redirect("/account/login");
+  }
+};
+
 
 module.exports = utilities;

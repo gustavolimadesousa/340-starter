@@ -11,7 +11,7 @@ const {
   handleInventoryValidation,
 } = require("../utilities/validation");
 
-
+// Public routes (no authentication needed)
 // Route to build inventory by classification view
 router.get(
   "/type/:classificationId",
@@ -24,69 +24,85 @@ router.get(
   utilities.handleErrors(invController.buildDetailView)
 );
 
-// Add a new route for the management view
-router.get("/management",
-  utilities.handleErrors(invController.buildManagementView)  // Render the management view
+// Protected routes (require Employee/Admin access)
+// Management view
+router.get(
+  "/management",
+  utilities.checkLogin,
+  utilities.checkAccountType,
+  utilities.handleErrors(invController.buildManagementView)
 );
 
-// Route to display the add classification form
+// Add classification
 router.get(
   "/add-classification",
+  utilities.checkLogin,
+  utilities.checkAccountType,
   utilities.handleErrors(invController.buildAddClassification)
 );
 
-// Route to handle the form submission
 router.post(
   "/add-classification",
+  utilities.checkLogin,
+  utilities.checkAccountType,
   validateClassification,
   handleValidationErrors,
   utilities.handleErrors(invController.addClassification)
 );
 
-
-// GET route to display add inventory form
+// Add inventory
 router.get(
   "/add-inventory",
+  utilities.checkLogin,
+  utilities.checkAccountType,
   utilities.handleErrors(invController.buildAddInventory)
 );
 
-// POST route to handle form submission
 router.post(
   "/add-inventory",
+  utilities.checkLogin,
+  utilities.checkAccountType,
   validateInventory,
   handleInventoryValidation,
   utilities.handleErrors(invController.addInventory)
 );
 
-router.get(
-  "/getInventory/:classification_id",
-  utilities.handleErrors(invController.getInventoryJSON)
-);
-
-// Route to display edit inventory form
+// Edit inventory
 router.get(
   "/edit/:inv_id",
+  utilities.checkLogin,
+  utilities.checkAccountType,
   utilities.handleErrors(invController.editInventoryView)
 );
 
-// Add near other POST routes
 router.post(
   "/update",
-  validateInventory, // Reuse your existing inventory validation
+  utilities.checkLogin,
+  utilities.checkAccountType,
+  validateInventory,
   handleInventoryValidation,
   utilities.handleErrors(invController.updateInventory)
 );
 
-// Add these near other routes
+// Delete inventory
 router.get(
   "/delete/:inv_id",
+  utilities.checkLogin,
+  utilities.checkAccountType,
   utilities.handleErrors(invController.buildDeleteConfirmation)
 );
 
 router.post(
   "/delete",
+  utilities.checkLogin,
+  utilities.checkAccountType,
   utilities.handleErrors(invController.deleteInventoryItem)
 );
 
+// JSON route (typically for internal use)
+router.get(
+  "/getInventory/:classification_id",
+  utilities.handleErrors(invController.getInventoryJSON)
+);
 
 module.exports = router;
