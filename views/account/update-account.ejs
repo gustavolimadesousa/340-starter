@@ -1,0 +1,63 @@
+<main class="account-update">
+  <h1>Update Account Information</h1>
+
+  <% if (messages.error) { %>
+    <div class="alert alert-danger">
+      <%= messages.error %>
+    </div>
+    <% } %>
+
+      <% if (messages.success) { %>
+        <div class="alert alert-success">
+          <%= messages.success %>
+        </div>
+        <% } %>
+
+          <!-- Account Update Form -->
+          <section class="form-section">
+            <!-- <h2>Update Account Details</h2> -->
+            <form method="POST" action="/account/update-info" class="styled-form">
+              <input type="hidden" name="account_id" value="<%= accountData.account_id %>">
+
+              <div class="form-group">
+                <label for="account_firstname">First Name:</label>
+                <input type="text" id="account_firstname" name="account_firstname" class="form-control" required value="<%= (locals.formData && formData.account_firstname) || accountData.account_firstname %>">
+              </div>
+
+              <div class="form-group">
+                <label for="account_lastname">Last Name:</label>
+                <input type="text" id="account_lastname" name="account_lastname" class="form-control" required value="<%= (locals.formData && formData.account_lastname) || accountData.account_lastname %>">
+              </div>
+
+              <div class="form-group">
+                <label for="account_email">Email:</label>
+                <input type="email" id="account_email" name="account_email" class="form-control" required value="<%= (locals.formData && formData.account_email) || accountData.account_email %>">
+              </div>
+
+              <button type="submit" class="btn btn-primary">Update Account</button>
+            </form>
+          </section>
+
+          <!-- Password Change Form -->
+          <section class="form-section">
+            <h2>Change Password</h2>
+            <form method="POST" action="/account/update-password" class="styled-form">
+              <input type="hidden" name="account_id" value="<%= accountData.account_id %>">
+
+              <div class="form-group">
+                <label for="account_password">New Password:</label>
+                <input type="password" id="account_password" name="account_password" class="form-control" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$">
+                <small class="form-text text-muted">
+                  Must be at least 12 characters with 1 uppercase, 1 number, and 1 special character
+                </small>
+              </div>
+
+              <div class="form-group">
+                <label for="confirm_password">Confirm New Password:</label>
+                <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
+              </div>
+
+              <button type="submit" class="btn btn-primary">Change Password</button>
+            </form>
+          </section>
+</main>

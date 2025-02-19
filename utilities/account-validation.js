@@ -127,5 +127,92 @@ validate.checkLoginData = async (req, res, next) => {
   next();
 };
 
+/* **********************************
+ *  Update Account Validation Rules
+ * ********************************* */
+validate.updateAccountRules = () => {
+  return [
+    body("account_firstname")
+      .trim()
+      .escape()
+      .notEmpty()
+      .withMessage("First name is required"),
 
-module.exports = validate;
+    body("account_lastname")
+      .trim()
+      .escape()
+      .notEmpty()
+      .withMessage("Last name is required"),
+
+    body("account_email")
+      .trim()
+      .isEmail()
+      .normalizeEmail()
+      .withMessage("A valid email is required")
+      .custom(async (account_email, { req }) => {
+        const account = await accountModel.getAccountByEmail(account_email);
+        // Check if email belongs to current user
+        if (account && account.account_id !== parseInt(req.body.account_id)) {
+          throw new Error("Email already exists. Please use a different email.");
+        }
+      })
+  ];
+};
+
+/* ******************************
+ * Check Update Data
+ * ***************************** */
+validate.checkUpdateData = async (req, res, next) => {
+  const errors = validationResult(req);
+  
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav();
+    const accountData = await accountModel.getAccountById(req.body.account_id);
+    
+    res.render("account/update-account", {
+      title: "Update Account",
+      nav,
+      accountData: {
+        ...accountData,
+        ...req.body // Preserve user input
+      },
+      errors: errors.array(),
+    });
+    return;
+  }
+  next();
+};
+
+// Add to existing validation
+validate.updatePasswordRules = () => {
+  return [
+    body('account_password')
+      .trim()
+      .notEmpty()
+      .isStrongPassword({
+        minLength: 12,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1
+      })
+      .withMessage('Password does not meet requirements'),
+    
+    body('confirm_password')
+      .trim()
+      .notEmpty()
+      .custom((value, { req }) => value === req.body.account_password)
+      .withMessage('Passwords do not match')
+  ];
+};
+
+
+module.exports = {
+  registrationRules: validate.registrationRules,
+  checkRegData: validate.checkRegData,
+  loginRules: validate.loginRules,
+  checkLoginData: validate.checkLoginData,
+  updateAccountRules: validate.updateAccountRules, 
+  checkUpdateData: validate.checkUpdateData,
+  updatePasswordRules: validate.updatePasswordRules,
+};
