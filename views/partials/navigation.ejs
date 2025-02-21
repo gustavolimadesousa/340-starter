@@ -1,3 +1,10 @@
+<!-- Add this form to your navigation.ejs -->
+<form action="/inv/search" method="GET" class="search-form">
+  <input type="text" name="q" placeholder="Search vehicles..." value="<%= typeof query !== 'undefined' ? query : '' %>">
+  <button type="submit">Search</button>
+</form>
+
 <nav>
   <%- nav %>
 </nav>
+

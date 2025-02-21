@@ -367,4 +367,24 @@ invCont.deleteInventoryItem = async function (req, res, next) {
   }
 };
 
+// Add this method to invController.js
+invCont.searchInventory = async function (req, res, next) {
+  const query = req.query.q; // Get the search query from the URL
+
+  try {
+    const results = await invModel.searchInventory(query);
+    const nav = await utilities.getNav();
+
+    res.render("./inventory/search-results", {
+      title: "Search Results",
+      nav,
+      results,
+      query,
+    });
+  } catch (error) {
+    console.error("Search error:", error);
+    next(error);
+  }
+};
+
 module.exports = invCont;

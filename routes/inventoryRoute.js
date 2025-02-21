@@ -105,4 +105,6 @@ router.get(
   utilities.handleErrors(invController.getInventoryJSON)
 );
 
+router.get("/search", utilities.handleErrors(invController.searchInventory));
+
 module.exports = router;

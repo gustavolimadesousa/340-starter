@@ -188,6 +188,22 @@ async function deleteInventoryItem(inv_id) {
   }
 }
 
+// Add this method to inventory-model.js
+async function searchInventory(query) {
+  try {
+    const sql = `
+      SELECT * FROM inventory
+      WHERE inv_make ILIKE $1 OR inv_model ILIKE $1 OR inv_description ILIKE $1
+    `;
+    const result = await pool.query(sql, [`%${query}%`]);
+    return result.rows;
+  } catch (error) {
+    console.error("Search inventory error:", error);
+    return [];
+  }
+}
+
+
 
 module.exports = {
   getClassifications,
@@ -198,4 +214,5 @@ module.exports = {
   getInventoryById,
   updateInventory,
   deleteInventoryItem,
+  searchInventory,
 };
